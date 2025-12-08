@@ -1,9 +1,10 @@
-package com.b0966031908gmail.happypacker
+package com.b0966031908gmail.happypacker.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.b0966031908gmail.happypacker.R
 
 class MainActivity : AppCompatActivity() {
 
