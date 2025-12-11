@@ -36,4 +36,5 @@
         android:id="@+id/sellingFragment"
         android:name="com.b0966031908gmail.happypacker.ui.selling.SellingFragment"
         android:label="賣襪襪" />
+
 </navigation>

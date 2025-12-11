@@ -37,9 +37,6 @@ android {
     buildFeatures {
         compose = true
     }
-    buildFeatures {
-        viewBinding = true  // ← 加這行
-    }
 }
 
 dependencies {

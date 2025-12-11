@@ -1,4 +1,4 @@
-package com.b0966031908gmail.happypacker.ui.home
+package com.b0966031908gmail.happypacker.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
