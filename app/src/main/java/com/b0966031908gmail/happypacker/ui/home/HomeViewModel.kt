@@ -16,7 +16,6 @@ class HomeViewModel : ViewModel() {
             _uiState.value = HomeUiState.NavigateTo(button)
         }
     }
-
     fun resetState() {
         _uiState.value = HomeUiState.Idle
     }
