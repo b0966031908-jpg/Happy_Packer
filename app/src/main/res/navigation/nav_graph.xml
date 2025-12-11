@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.b0966031908gmail.happypacker.ui.ui.home.HomeFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.home.HomeFragment"
         android:label="快樂襪包裝師">
 
         <action
@@ -24,17 +24,16 @@
 
     <fragment
         android:id="@+id/canvasFragment"
-        android:name="com.b0966031908gmail.happypacker.ui.ui.canvas.CanvasFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.canvas.CanvasFragment"
         android:label="建立畫布" />
 
     <fragment
         android:id="@+id/packingFragment"
-        android:name="com.b0966031908gmail.happypacker.ui.ui.packing.PackingFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.packing.PackingFragment"
         android:label="包裝襪襪" />
 
     <fragment
         android:id="@+id/sellingFragment"
-        android:name="com.b0966031908gmail.happypacker.ui.ui.selling.SellingFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.selling.SellingFragment"
         android:label="賣襪襪" />
-
 </navigation>

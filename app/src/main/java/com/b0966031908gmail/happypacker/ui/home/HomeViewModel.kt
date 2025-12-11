@@ -1,26 +1,34 @@
-package com.b0966031908gmail.happypacker
+package com.b0966031908gmail.happypacker.ui.home
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class HomeViewModel : ViewModel() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
+    val uiState: StateFlow<HomeUiState> = _uiState
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        setupActionBarWithNavController(navController)
+    fun onButtonClick(button: HomeButton) {
+        viewModelScope.launch {
+            _uiState.value = HomeUiState.NavigateTo(button)
+        }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navHostFragment.navController.navigateUp() || super.onSupportNavigateUp()
+    fun resetState() {
+        _uiState.value = HomeUiState.Idle
     }
+}
+
+sealed class HomeUiState {
+    object Idle : HomeUiState()
+    data class NavigateTo(val button: HomeButton) : HomeUiState()
+}
+
+enum class HomeButton {
+    CANVAS,
+    PACKING,
+    SELLING
 }

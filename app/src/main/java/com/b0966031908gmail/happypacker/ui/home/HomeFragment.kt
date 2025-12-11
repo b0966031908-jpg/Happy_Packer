@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.yourpackage.happypacker.ui.home.HomeButton
-import com.yourpackage.happypacker.ui.home.HomeUiState
-import com.yourpackage.happypacker.ui.home.HomeViewModel
+import androidx.navigation.fragment.findNavController
+import com.b0966031908gmail.happypacker.R
+import com.b0966031908gmail.happypacker.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
