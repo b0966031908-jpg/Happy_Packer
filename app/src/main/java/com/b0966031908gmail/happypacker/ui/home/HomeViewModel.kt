@@ -10,7 +10,6 @@ class HomeViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
     val uiState: StateFlow<HomeUiState> = _uiState
-
     fun onButtonClick(button: HomeButton) {
         viewModelScope.launch {
             _uiState.value = HomeUiState.NavigateTo(button)
