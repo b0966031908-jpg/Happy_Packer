@@ -1,4 +1,4 @@
-package com.b0966031908gmail.happypacker.home
+package com.b0966031908gmail.happypacker.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,13 +27,11 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupClickListeners()
         observeViewModel()
     }
-
     private fun setupClickListeners() {
         binding.cardCanvas.setOnClickListener {
             viewModel.onButtonClick(HomeButton.CANVAS)
@@ -47,7 +45,6 @@ class HomeFragment : Fragment() {
             viewModel.onButtonClick(HomeButton.SELLING)
         }
     }
-
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
