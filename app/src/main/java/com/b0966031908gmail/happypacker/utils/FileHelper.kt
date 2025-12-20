@@ -85,4 +85,13 @@ object FileHelper {
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
     }
+
+    fun deleteArtwork(filePath: String): Boolean {
+        return try {
+            File(filePath).delete()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 }
