@@ -11,7 +11,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="套用圖案到襪子"
+        android:text="✨ 你的作品"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#212121"
@@ -53,28 +53,44 @@
             android:layout_height="match_parent"
             android:background="@android:color/white">
 
-            <!-- 襪子模型（底層） -->
-            <ImageView
-                android:id="@+id/ivSockTemplate"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/sock_template"
-                android:scaleType="centerInside"
-                android:padding="40dp" />
+                android:padding="20dp">
 
-            <!-- 使用者的圖案（上層） -->
-            <ImageView
-                android:id="@+id/ivArtwork"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter" />
+                <!-- 👇 你的作品（會被遮罩裁切成襪子形狀） -->
+                <com.b0966031908gmail.happypacker.ui.packing.SockMaskView
+                    android:id="@+id/maskContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- ✅ 修正：移除 android:src，讓程式碼動態載入作品 -->
+                    <ImageView
+                        android:id="@+id/ivArtwork"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside" />
+
+                </com.b0966031908gmail.happypacker.ui.packing.SockMaskView>
+
+                <!-- 襪子輪廓（半透明，讓用戶看到邊界） -->
+                <ImageView
+                    android:id="@+id/ivSockOutline"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/sock_template"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:alpha="0.0" />
+
+            </FrameLayout>
 
             <!-- 浮水印提示 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✨ 你的圖案"
+                android:text="點擊重置"
                 android:textSize="14sp"
                 android:textColor="#80000000"
                 android:layout_gravity="bottom|center_horizontal"
@@ -175,7 +191,6 @@
                     android:orientation="vertical"
                     android:gravity="center">
 
-                    <!-- 上 -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnMoveUp"
                         android:layout_width="60dp"
@@ -191,7 +206,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- 左 -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnMoveLeft"
                             android:layout_width="60dp"
@@ -202,14 +216,12 @@
                             app:cornerRadius="30dp"
                             style="@style/Widget.Material3.Button.TonalButton" />
 
-                        <!-- 中心點（視覺提示） -->
                         <View
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_margin="4dp"
                             android:background="@android:color/transparent" />
 
-                        <!-- 右 -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnMoveRight"
                             android:layout_width="60dp"
@@ -222,7 +234,6 @@
 
                     </LinearLayout>
 
-                    <!-- 下 -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnMoveDown"
                         android:layout_width="60dp"
@@ -270,7 +281,7 @@
                     android:layout_height="64dp"
                     android:layout_weight="1"
                     android:layout_margin="4dp"
-                    android:text="✓ 確認套用"
+                    android:text="✓ 確認"
                     android:textSize="18sp"
                     app:backgroundTint="#4CAF50"
                     style="@style/Widget.Material3.Button" />

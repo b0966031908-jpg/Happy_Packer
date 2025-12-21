@@ -169,7 +169,7 @@ class SockPreviewFragment : Fragment() {
         // 確認 - 進入包裝教學
         binding.btnConfirm.setOnClickListener {
             showToast("確認！準備進入包裝教學 ✓")
-            speak("太棒了！圖案確認了！現在來學習包裝襪子！")
+            speak("進入包裝教學！")
             handler.postDelayed({
                 // 導航到包裝教學頁面
                 findNavController().navigate(R.id.action_sockPreview_to_packingTutorial)

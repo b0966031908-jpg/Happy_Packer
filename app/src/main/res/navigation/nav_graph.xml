@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/canvasFragment"
         android:name="com.b0966031908gmail.happypacker.ui.canvas.CanvasFragment"
-        android:label="建立畫布" />
+        android:label="快樂畫布" />
 
     <fragment
         android:id="@+id/packingFragment"
@@ -39,35 +39,31 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+
         <action
             android:id="@+id/action_packingFragment_to_sockPreviewFragment"
             app:destination="@id/sockPreviewFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/sockPreviewFragment"
         android:name="com.b0966031908gmail.happypacker.ui.packing.SockPreviewFragment"
-        android:label="套用到襪子">
+        android:label="預覽模式">
 
-        <!-- 接收檔案路徑參數 -->
         <argument
             android:name="filePath"
             app:argType="string" />
 
-        <!-- 修正：導向包裝教學頁面 -->
         <action
             android:id="@+id/action_sockPreview_to_packingTutorial"
             app:destination="@id/packingTutorialFragment" />
     </fragment>
 
-    <!-- 新增：包裝教學頁面 -->
     <fragment
         android:id="@+id/packingTutorialFragment"
         android:name="com.b0966031908gmail.happypacker.ui.packing.PackingTutorialFragment"
         android:label="包裝教學">
 
-        <!-- 完成後回首頁 -->
         <action
             android:id="@+id/action_packingTutorial_to_home"
             app:destination="@id/homeFragment"
@@ -75,9 +71,41 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <!-- 販售主頁 -->
     <fragment
         android:id="@+id/sellingFragment"
         android:name="com.b0966031908gmail.happypacker.ui.selling.SellingFragment"
-        android:label="賣襪襪" />
+        android:label="販賣襪襪">
+
+        <!-- 👇 改為導航到關卡選擇 -->
+        <action
+            android:id="@+id/action_sellingFragment_to_levelSelectFragment"
+            app:destination="@id/levelSelectFragment" />
+    </fragment>
+
+    <!-- 👇 新增：關卡選擇頁面 -->
+    <fragment
+        android:id="@+id/levelSelectFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.selling.LevelSelectFragment"
+        android:label="選擇關卡">
+
+        <!-- 導航到遊戲 -->
+        <action
+            android:id="@+id/action_levelSelectFragment_to_sellingGameFragment"
+            app:destination="@id/sellingGameFragment" />
+    </fragment>
+
+    <!-- 販售遊戲頁面 -->
+    <fragment
+        android:id="@+id/sellingGameFragment"
+        android:name="com.b0966031908gmail.happypacker.ui.selling.SellingGameFragment"
+        android:label="販售遊戲">
+
+        <!-- 👇 接收關卡編號參數 -->
+        <argument
+            android:name="levelNumber"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </fragment>
 
 </navigation>

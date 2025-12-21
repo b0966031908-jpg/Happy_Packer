@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 文件名：bg_coin.xml -->
+<!-- 位置：res/drawable/bg_coin.xml -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 金色背景 -->
+    <solid android:color="#FFD700" />
+
+    <!-- 邊框 -->
+    <stroke
+        android:width="3dp"
+        android:color="#FFA500" />
+
+    <!-- 陰影效果（漸層） -->
+    <gradient
+        android:startColor="#FFE55C"
+        android:endColor="#FFD700"
+        android:angle="135"
+        android:type="linear" />
+
+</shape>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 文件名：view_coin.xml -->
+<!-- 位置：res/layout/view_coin.xml -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_margin="8dp">
+
+    <!-- 圓形背景 -->
+    <View
+        android:id="@+id/coinBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_coin" />
+
+    <!-- 金額文字 -->
+    <TextView
+        android:id="@+id/tvCoinValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="10"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF" />
+
+</FrameLayout>

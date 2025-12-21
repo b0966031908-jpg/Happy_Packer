@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 升級版遊戲布局 -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF8E1">
+
+    <!-- 頂部資訊欄 -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#FFC107"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvLevel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="第 1 關"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏱️ 30"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="得分: 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/buttonArea"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- 客人區域 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/customerCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:background="#FFFFFF">
+
+                    <TextView
+                        android:id="@+id/tvCustomerEmoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👧"
+                        android:textSize="60sp" />
+
+                    <TextView
+                        android:id="@+id/tvCustomerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="小美"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        android:layout_marginTop="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvCustomerSpeech"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我要 2 雙紅色襪子！"
+                        android:textSize="20sp"
+                        android:textColor="#FF6B9E"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:padding="12dp"
+                        android:background="#FFF0F5" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <FrameLayout
+                android:id="@+id/contentArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <!-- 襪子選擇區域 -->
+                <LinearLayout
+                    android:id="@+id/sockSelectionArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="請選擇襪子："
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="12dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewSocks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:clipToPadding="false"
+                        android:padding="4dp" />
+
+                </LinearLayout>
+
+                <!-- 找零問題區域（選擇題） -->
+                <LinearLayout
+                    android:id="@+id/changeQuestionArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#E3F2FD">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💰 付款資訊"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#1976D2" />
+
+                            <TextView
+                                android:id="@+id/tvCalculation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 雙 × 30元 = 60元"
+                                android:textSize="16sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvPaymentInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="客人給你：100元"
+                                android:textSize="16sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="要找多少錢？"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="#FF6B9E"
+                                android:layout_marginTop="12dp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- 選擇題按鈕 -->
+                    <LinearLayout
+                        android:id="@+id/answerOptions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:paddingHorizontal="16dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOption1"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_margin="6dp"
+                            android:text="10元"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.Material3.Button.TonalButton" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOption2"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_margin="6dp"
+                            android:text="20元"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.Material3.Button.TonalButton" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOption3"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_margin="6dp"
+                            android:text="30元"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.Material3.Button.TonalButton" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- 拼錢幣區域（中等模式）- 緊湊版 -->
+                <LinearLayout
+                    android:id="@+id/coinAssemblyArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <!-- 付款資訊卡片 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#E3F2FD">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💰 付款資訊"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#1976D2" />
+
+                            <TextView
+                                android:id="@+id/tvCalculationCoin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 雙 × 30元 = 60元"
+                                android:textSize="15sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvPaymentInfoCoin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="客人給你：100元"
+                                android:textSize="15sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="請用錢幣拼出找零金額"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="#FF6B9E"
+                                android:layout_marginTop="8dp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- 錢幣選擇區 - 緊湊版 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="12dp"
+                        android:background="#FFF3E0"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🪙 選擇錢幣"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#E65100"
+                            android:layout_marginBottom="8dp"
+                            android:layout_gravity="center_horizontal" />
+
+                        <!-- 50元硬幣 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="6dp">
+
+                            <View
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/coin_50" />
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="50元"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:layout_marginStart="8dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin50Minus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="−"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#FF5252"
+                                style="@style/Widget.Material3.Button" />
+
+                            <TextView
+                                android:id="@+id/tvCoin50Count"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="× 0"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin50Plus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="+"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#4CAF50"
+                                style="@style/Widget.Material3.Button" />
+
+                        </LinearLayout>
+
+                        <!-- 10元硬幣 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="6dp">
+
+                            <View
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/coin_10" />
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="10元"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:layout_marginStart="8dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin10Minus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="−"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#FF5252"
+                                style="@style/Widget.Material3.Button" />
+
+                            <TextView
+                                android:id="@+id/tvCoin10Count"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="× 0"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin10Plus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="+"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#4CAF50"
+                                style="@style/Widget.Material3.Button" />
+
+                        </LinearLayout>
+
+                        <!-- 5元硬幣 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="6dp">
+
+                            <View
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/coin_5" />
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="5元"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:layout_marginStart="8dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin5Minus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="−"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#FF5252"
+                                style="@style/Widget.Material3.Button" />
+
+                            <TextView
+                                android:id="@+id/tvCoin5Count"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="× 0"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin5Plus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="+"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#4CAF50"
+                                style="@style/Widget.Material3.Button" />
+
+                        </LinearLayout>
+
+                        <!-- 1元硬幣 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <View
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@drawable/coin_1" />
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="1元"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:layout_marginStart="8dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin1Minus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="−"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#FF5252"
+                                style="@style/Widget.Material3.Button" />
+
+                            <TextView
+                                android:id="@+id/tvCoin1Count"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="× 0"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#212121"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="6dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCoin1Plus"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:text="+"
+                                android:textSize="18sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:cornerRadius="22dp"
+                                app:backgroundTint="#4CAF50"
+                                style="@style/Widget.Material3.Button" />
+
+                        </LinearLayout>
+
+                        <!-- 分隔線 -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E65100"
+                            android:layout_marginVertical="6dp" />
+
+                        <!-- 總計 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:background="#FFFFFF"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💰 總計："
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="#E65100" />
+
+                            <TextView
+                                android:id="@+id/tvCoinTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0元"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="#FF5252"
+                                android:layout_marginStart="6dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- 確認按鈕 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmitCoins"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_margin="12dp"
+                        android:text="✓ 確認找零"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="#4CAF50"
+                        style="@style/Widget.Material3.Button" />
+
+                </LinearLayout>
+
+                <!-- 輸入答案區域（困難模式） -->
+                <LinearLayout
+                    android:id="@+id/inputAnswerArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp"
+                        app:cardBackgroundColor="#E3F2FD">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💰 付款資訊"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="#1976D2" />
+
+                            <TextView
+                                android:id="@+id/tvCalculationInput"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3 雙 × 40元 = 120元"
+                                android:textSize="16sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvPaymentInfoInput"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="客人給你：200元"
+                                android:textSize="16sp"
+                                android:textColor="#212121"
+                                android:layout_marginTop="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="要找多少錢？"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="#FF6B9E"
+                                android:layout_marginTop="12dp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- 輸入框 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:hint="請輸入金額（元）"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAnswer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:gravity="center" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- 確認按鈕 -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmitAnswer"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="16dp"
+                        android:text="確認答案"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="#4CAF50"
+                        style="@style/Widget.Material3.Button" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- 底部按鈕區域 -->
+    <LinearLayout
+        android:id="@+id/buttonArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="返回"
+            android:textSize="16sp"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:text="下一題"
+            android:textSize="16sp"
+            app:backgroundTint="#4CAF50"
+            style="@style/Widget.Material3.Button" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

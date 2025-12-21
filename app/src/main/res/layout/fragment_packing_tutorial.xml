@@ -35,14 +35,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 教學圖片區域 -->
+    <!-- 美化後的教學圖片區域 -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
         app:layout_constraintTop_toBottomOf="@id/tvStepTitle"
         app:layout_constraintBottom_toTopOf="@id/controlButtons"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,15 +51,16 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_tutorial_gradient">
 
-            <!-- 教學圖片（之後換真圖） -->
+            <!-- 去背圖片 + padding 讓圖片不貼邊 -->
             <ImageView
                 android:id="@+id/ivStepImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
-                android:background="#E0E0E0" />
+                android:padding="32dp" />
 
             <!-- 佔位文字 -->
             <TextView
@@ -70,6 +71,21 @@
                 android:text="教學圖片"
                 android:textSize="24sp"
                 android:textColor="#757575" />
+
+            <!-- 步驟編號徽章 -->
+            <TextView
+                android:id="@+id/tvStepBadge"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_step_badge"
+                android:gravity="center"
+                android:text="1"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:elevation="4dp" />
 
         </FrameLayout>
 

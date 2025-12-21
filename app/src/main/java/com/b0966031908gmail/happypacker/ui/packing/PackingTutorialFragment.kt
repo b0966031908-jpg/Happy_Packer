@@ -1,6 +1,8 @@
 package com.b0966031908gmail.happypacker.ui.packing
 
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.b0966031908gmail.happypacker.databinding.FragmentPackingTutorialBinding
-import com.b0966031908gmail.happypacker.utils.TextToSpeechHelper
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 /**
- * 包裝教學 Fragment（含語音播放功能）
+ * 包裝教學 Fragment（含語音播放功能 + 美化版）
  */
 class PackingTutorialFragment : Fragment() {
 
@@ -25,9 +27,9 @@ class PackingTutorialFragment : Fragment() {
 
     private val viewModel: PackingTutorialViewModel by viewModels()
 
-    // 語音播放工具
-    private lateinit var ttsHelper: TextToSpeechHelper
-    private var isTtsInitialized = false
+    // 文字轉語音
+    private var textToSpeech: TextToSpeech? = null
+    private var isTtsReady = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,10 +43,7 @@ class PackingTutorialFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 初始化語音功能
-        initializeTextToSpeech()
-
-        // 設定觀察者和監聽器
+        initTextToSpeech()
         setupObservers()
         setupClickListeners()
         updateUI()
@@ -53,47 +52,72 @@ class PackingTutorialFragment : Fragment() {
     /**
      * 初始化文字轉語音
      */
-    private fun initializeTextToSpeech() {
-        ttsHelper = TextToSpeechHelper(requireContext())
+    private fun initTextToSpeech() {
+        textToSpeech = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                // 設定語言為繁體中文
+                val result = textToSpeech?.setLanguage(Locale.TRADITIONAL_CHINESE)
 
-        // 初始化 TTS
-        ttsHelper.initialize { success ->
-            isTtsInitialized = success
-
-            if (success) {
-                // 設定語音播放回調
-                ttsHelper.setOnSpeakingStarted {
-                    // 播放開始時更新按鈕
-                    requireActivity().runOnUiThread {
-                        binding.btnPlayAudio.text = "⏸️ 停止"
+                isTtsReady = when (result) {
+                    TextToSpeech.LANG_MISSING_DATA,
+                    TextToSpeech.LANG_NOT_SUPPORTED -> {
+                        // 如果繁體中文不支援，嘗試簡體中文
+                        textToSpeech?.setLanguage(Locale.CHINESE)
+                        true
                     }
+                    else -> true
                 }
 
-                ttsHelper.setOnSpeakingDone {
-                    // 播放完成時更新按鈕
-                    requireActivity().runOnUiThread {
-                        binding.btnPlayAudio.text = "🔊 播放"
-                    }
+                if (isTtsReady) {
+                    // 設定語速和音調
+                    textToSpeech?.setSpeechRate(0.9f)  // 稍慢，便於理解
+                    textToSpeech?.setPitch(1.0f)       // 正常音調
+
+                    // 設定播放狀態監聽
+                    textToSpeech?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                        override fun onStart(utteranceId: String?) {
+                            // 開始播放
+                            requireActivity().runOnUiThread {
+                                binding.btnPlayAudio.text = "⏸️ 停止"
+                            }
+                        }
+
+                        override fun onDone(utteranceId: String?) {
+                            // 播放完成
+                            requireActivity().runOnUiThread {
+                                binding.btnPlayAudio.text = "🔊 播放"
+                            }
+                        }
+
+                        @Deprecated("Deprecated in Java")
+                        override fun onError(utteranceId: String?) {
+                            // 播放錯誤
+                            requireActivity().runOnUiThread {
+                                binding.btnPlayAudio.text = "🔊 播放"
+                            }
+                        }
+                    })
                 }
             } else {
+                isTtsReady = false
                 Toast.makeText(
                     requireContext(),
-                    "語音功能初始化失敗，請確認系統支援中文語音",
-                    Toast.LENGTH_LONG
+                    "語音功能初始化失敗",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
 
     /**
-     * 觀察 ViewModel 資料變化
+     * 觀察資料變化
      */
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currentStepIndex.collect { index ->
                     // 切換步驟時停止語音
-                    ttsHelper.stop()
+                    stopSpeaking()
                     updateUI()
                 }
             }
@@ -101,7 +125,7 @@ class PackingTutorialFragment : Fragment() {
     }
 
     /**
-     * 設定按鈕點擊事件
+     * 設定按鈕點擊
      */
     private fun setupClickListeners() {
         // 上一步
@@ -112,8 +136,7 @@ class PackingTutorialFragment : Fragment() {
         // 下一步/完成
         binding.btnNext.setOnClickListener {
             if (viewModel.isLastStep()) {
-                // 停止語音並返回
-                ttsHelper.stop()
+                stopSpeaking()
                 findNavController().navigateUp()
             } else {
                 viewModel.nextStep()
@@ -122,32 +145,46 @@ class PackingTutorialFragment : Fragment() {
 
         // 播放/停止語音
         binding.btnPlayAudio.setOnClickListener {
-            handleAudioPlayback()
+            if (!isTtsReady) {
+                Toast.makeText(
+                    requireContext(),
+                    "語音功能尚未就緒",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (textToSpeech?.isSpeaking == true) {
+                // 正在播放，停止
+                stopSpeaking()
+            } else {
+                // 開始播放
+                val currentStep = viewModel.getCurrentStep()
+                speak(currentStep.audioText)
+            }
         }
     }
 
     /**
-     * 處理語音播放/停止
+     * 播放語音
      */
-    private fun handleAudioPlayback() {
-        if (!isTtsInitialized) {
-            Toast.makeText(
-                requireContext(),
-                "語音功能尚未就緒，請稍候",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
+    private fun speak(text: String) {
+        textToSpeech?.speak(
+            text,
+            TextToSpeech.QUEUE_FLUSH,
+            null,
+            "TUTORIAL_${System.currentTimeMillis()}"
+        )
+    }
 
-        if (ttsHelper.isSpeaking()) {
-            // 正在播放，則停止
-            ttsHelper.stop()
-            binding.btnPlayAudio.text = "🔊 播放"
-        } else {
-            // 未播放，則開始播放
-            val currentStep = viewModel.getCurrentStep()
-            ttsHelper.speak(currentStep.audioText)
+    /**
+     * 停止播放
+     */
+    private fun stopSpeaking() {
+        if (textToSpeech?.isSpeaking == true) {
+            textToSpeech?.stop()
         }
+        binding.btnPlayAudio.text = "🔊 播放"
     }
 
     /**
@@ -173,31 +210,18 @@ class PackingTutorialFragment : Fragment() {
             binding.tvPlaceholder.visibility = View.VISIBLE
         }
 
-        // 更新按鈕狀態
-        updateButtonStates()
-    }
+        // 👇 更新步驟編號徽章
+        binding.tvStepBadge.text = currentStep.stepNumber.toString()
 
-    /**
-     * 更新按鈕狀態
-     */
-    private fun updateButtonStates() {
-        // 上一步按鈕
+        // 更新按鈕狀態
         val hasPrevious = viewModel.hasPreviousStep()
         binding.btnPrevious.isEnabled = hasPrevious
         binding.btnPrevious.alpha = if (hasPrevious) 1.0f else 0.5f
 
-        // 下一步/完成按鈕
         binding.btnNext.text = if (viewModel.isLastStep()) {
             "完成"
         } else {
             "下一步"
-        }
-
-        // 播放按鈕
-        binding.btnPlayAudio.text = if (ttsHelper.isSpeaking()) {
-            "⏸️ 停止"
-        } else {
-            "🔊 播放"
         }
     }
 
@@ -206,7 +230,7 @@ class PackingTutorialFragment : Fragment() {
      */
     override fun onPause() {
         super.onPause()
-        ttsHelper.stop()
+        stopSpeaking()
     }
 
     /**
@@ -214,7 +238,9 @@ class PackingTutorialFragment : Fragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        ttsHelper.shutdown()
+        textToSpeech?.stop()
+        textToSpeech?.shutdown()
+        textToSpeech = null
         _binding = null
     }
 
