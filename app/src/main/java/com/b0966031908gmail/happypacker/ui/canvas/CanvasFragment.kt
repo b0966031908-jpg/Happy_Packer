@@ -176,7 +176,6 @@ class CanvasFragment : Fragment() {
             saveArtwork()
         }
     }
-
     private var selectedColor = Color.BLACK
 
     private fun getCurrentSelectedColor(): Int {
