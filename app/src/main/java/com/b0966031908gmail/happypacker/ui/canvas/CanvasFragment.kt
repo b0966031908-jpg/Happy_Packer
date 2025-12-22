@@ -70,6 +70,7 @@ class CanvasFragment : Fragment() {
             showColorPickerDialog()
         }
     }
+
     // 更多顏色選擇
     private fun showColorPickerDialog() {
         val colors = arrayOf(
@@ -154,6 +155,18 @@ class CanvasFragment : Fragment() {
             Toast.makeText(requireContext(), "背景填充", Toast.LENGTH_SHORT).show()
         }
 
+        // 👇 新增：Undo 按鈕
+        binding.btnUndo.setOnClickListener {
+            binding.canvasView.undo()
+            Toast.makeText(requireContext(), "上一步", Toast.LENGTH_SHORT).show()
+        }
+
+        // 👇 新增：Redo 按鈕
+        binding.btnRedo.setOnClickListener {
+            binding.canvasView.redo()
+            Toast.makeText(requireContext(), "返回", Toast.LENGTH_SHORT).show()
+        }
+
         binding.btnClear.setOnClickListener {
             Toast.makeText(requireContext(), "清空畫布", Toast.LENGTH_SHORT).show()
             binding.canvasView.clearCanvas()
@@ -173,7 +186,7 @@ class CanvasFragment : Fragment() {
     private fun saveArtwork() {
         val bitmap = binding.canvasView.getBitmap()
         if (bitmap != null) {
-            showSaveDialog(bitmap)  // 應該呼叫這個
+            showSaveDialog(bitmap)
         } else {
             Toast.makeText(requireContext(), "無法取得畫作", Toast.LENGTH_SHORT).show()
         }

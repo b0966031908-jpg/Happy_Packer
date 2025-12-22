@@ -1,7 +1,14 @@
 package com.b0966031908gmail.happypacker.utils
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Point
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -20,6 +27,8 @@ class CanvasView @JvmOverloads constructor(
     private var canvasBitmap: Bitmap? = null
 
     private val paths = mutableListOf<PathData>()
+    private val undonePaths = mutableListOf<PathData>()  // 👈 新增：用於 Redo
+
     private var currentColor = Color.BLACK
     private var currentStrokeWidth = 20f
     private var isEraserMode = false
@@ -91,6 +100,9 @@ class CanvasView @JvmOverloads constructor(
                 paths.add(PathData(Path(drawPath), paint))
                 drawCanvas?.drawPath(drawPath, drawPaint)
                 drawPath.reset()
+
+                // 👈 新增：清空 Redo 列表
+                undonePaths.clear()
             }
             else -> return false
         }
@@ -118,6 +130,7 @@ class CanvasView @JvmOverloads constructor(
 
     fun clearCanvas() {
         paths.clear()
+        undonePaths.clear()  // 👈 新增：清空 Redo
         drawPath.reset()
         canvasBitmap?.eraseColor(Color.TRANSPARENT)  // 清成透明
         drawCanvas?.drawColor(Color.WHITE)  // 再填白色
@@ -183,6 +196,48 @@ class CanvasView @JvmOverloads constructor(
         }
 
         invalidate()
+    }
+
+    // 👇 新增：Undo（復原）
+    fun undo() {
+        if (paths.isNotEmpty()) {
+            val lastPath = paths.removeAt(paths.size - 1)
+            undonePaths.add(lastPath)
+            redrawCanvas()
+        }
+    }
+
+    // 👇 新增：Redo（重做）
+    fun redo() {
+        if (undonePaths.isNotEmpty()) {
+            val lastUndone = undonePaths.removeAt(undonePaths.size - 1)
+            paths.add(lastUndone)
+            redrawCanvas()
+        }
+    }
+
+    // 👇 新增：重新繪製畫布
+    private fun redrawCanvas() {
+        // 清除 Bitmap
+        canvasBitmap?.eraseColor(Color.TRANSPARENT)
+        drawCanvas?.drawColor(Color.WHITE)
+
+        // 重新繪製所有路徑
+        paths.forEach { pathData ->
+            drawCanvas?.drawPath(pathData.path, pathData.paint)
+        }
+
+        invalidate()
+    }
+
+    // 👇 新增：檢查是否可以 Undo
+    fun canUndo(): Boolean {
+        return paths.isNotEmpty()
+    }
+
+    // 👇 新增：檢查是否可以 Redo
+    fun canRedo(): Boolean {
+        return undonePaths.isNotEmpty()
     }
 
     fun getBitmap(): Bitmap? {

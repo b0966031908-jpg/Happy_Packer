@@ -7,8 +7,6 @@
     android:background="#F5F5F5">
 
     <!-- 畫布區域 -->
-
-    <!-- 工具列容器 -->
     <com.b0966031908gmail.happypacker.utils.CanvasView
         android:id="@+id/canvasView"
         android:layout_width="0dp"
@@ -19,9 +17,9 @@
         app:layout_constraintBottom_toTopOf="@id/toolbarContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 工具列容器 -->
     <LinearLayout
         android:id="@+id/toolbarContainer"
         android:layout_width="match_parent"
@@ -160,71 +158,99 @@
             android:max="100"
             android:progress="20" />
 
-        <!-- 操作按鈕 -->
-        <LinearLayout
+        <!-- 👇 操作按鈕 - 改成可滑動 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工具"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:scrollbars="none">
 
-            <!-- 畫筆 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPen"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="畫筆"
-                android:textSize="18sp"
-                style="@style/Widget.Material3.Button.TonalButton" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <!-- 橡皮擦 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnEraser"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="橡皮擦"
-                android:textSize="18sp"
-                style="@style/Widget.Material3.Button.TonalButton" />
+                <!-- 畫筆 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPen"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="🖊️\n畫筆"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
-            <!-- 油漆桶 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFill"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="背景填充"
-                android:textSize="18sp"
-                style="@style/Widget.Material3.Button.TonalButton" />
+                <!-- 橡皮擦 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEraser"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="🧹\n橡皮擦"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
-            <!-- 清空 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClear"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="清空"
-                android:textSize="18sp"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
+                <!-- 油漆桶 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFill"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="🪣\n油漆桶"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.TonalButton" />
 
-            <!-- 儲存 -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSave"
-                android:layout_width="0dp"
-                android:layout_height="64dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:text="儲存畫布"
-                android:textSize="18sp"
-                app:backgroundTint="#FF6B9E"
-                style="@style/Widget.Material3.Button" />
+                <!-- Undo -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUndo"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="↶\n上一步"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
 
-        </LinearLayout>
+                <!-- Redo -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRedo"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="↷\n返回"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <!-- 清空 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClear"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="🗑️\n清空"
+                    android:textSize="14sp"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <!-- 儲存 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="4dp"
+                    android:text="💾\n儲存"
+                    android:textSize="14sp"
+                    app:backgroundTint="#FF6B9E"
+                    style="@style/Widget.Material3.Button" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
 
     </LinearLayout>
 
